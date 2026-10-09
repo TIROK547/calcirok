@@ -1,10 +1,9 @@
-// #include "util.h"
 #include "./user_input_utils.cpp"
 #include "util.h"
-#include <cstdio>
 #include <iostream>
 #include <string>
-int calculate(double a, double b, char o) {
+
+double calculate(double a, double b, char o) {
   double res = {};
   switch (o) {
   case '+':
