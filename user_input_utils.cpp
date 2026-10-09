@@ -1,70 +1,72 @@
 #include "user_input_utils.h"
+
+#include <algorithm>
+#include <cctype>
 #include <iostream>
 #include <string>
 
-bool is_number(char c) { return c >= '0' && c <= '9'; }
+namespace {
 
-bool is_operation(const char c) {
-  bool res = false;
-  char operations[4] = {'+', '-', '*', '/'};
-  for (char o : operations) {
-    if (c == o) {
-      res = true;
-    }
-  }
-  return res;
+bool is_digit(char c) { return c >= '0' && c <= '9'; }
+
+bool is_operation(char c) {
+  return c == '+' || c == '-' || c == '*' || c == '/';
 }
 
-bool check_user_input(std::string user_input) {
-  bool a = false, b = false, o = false;
+} // namespace
+
+bool check_user_input(const std::string &user_input) {
+  bool has_lhs = false, has_rhs = false, has_op = false;
+
   for (char c : user_input) {
-    if (!is_number(c) && !is_operation(c)) {
+    if (!is_digit(c) && !is_operation(c)) {
       return false;
-    } else if (o && is_operation(c)) {
+    } else if (has_op && is_operation(c)) {
       return false;
     } else if (is_operation(c)) {
-      o = true;
-    } else if (o && is_number(c)) {
-      b = true;
-    } else if (!o && is_number(c)) {
-      a = true;
+      has_op = true;
+    } else if (has_op) {
+      has_rhs = true;
+    } else {
+      has_lhs = true;
     }
   }
-  if (!o) {
-    return false;
-  }
-  if (!a || !b) {
-    return false;
-  }
-  return true;
+
+  return has_op && has_lhs && has_rhs;
 }
 
 std::tuple<double, double, char, bool>
-handle_user_input(std::string user_input) {
-  int a = {}, b = {};
-  char o = {};
+handle_user_input(const std::string &user_input) {
+  double a = 0, b = 0;
+  char o = '\0';
 
   for (char c : user_input) {
-    if (is_number(c)) {
-      if (!is_operation(o)) {
-        a *= 10;
-        a += (c - '0');
+    if (is_digit(c)) {
+      if (o == '\0') {
+        a = a * 10 + (c - '0');
       } else {
-        b *= 10;
-        b += (c - '0');
+        b = b * 10 + (c - '0');
       }
     } else if (is_operation(c)) {
-      o = (char)c;
+      o = c;
     } else {
       return {0, 0, ' ', false};
     }
   }
+
   return {a, b, o, true};
 }
 
-std::string get_user_input() {
-  std::string user_input;
-  std::cout << "what do you want to get calculated?(+, -, /, *)\n: ";
-  std::cin >> user_input;
-  return user_input;
+std::optional<std::string> get_user_input() {
+  std::cout << "what do you want to get calculated?(+, -, /, *; q to quit)\n: ";
+
+  std::string line;
+  if (!std::getline(std::cin, line)) {
+    return std::nullopt;
+  }
+
+  line.erase(std::remove_if(line.begin(), line.end(),
+                            [](unsigned char c) { return std::isspace(c); }),
+             line.end());
+  return line;
 }

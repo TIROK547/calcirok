@@ -1,0 +1,27 @@
+# Build output
+/calcirok
+/calcirok_test
+a.out
+*.o
+*.obj
+*.exe
+build/
+
+# Debug / profiling artifacts
+*.dSYM/
+core
+core.*
+*.gcda
+*.gcno
+
+# Editor / tooling
+.vscode/
+.idea/
+*.swp
+*~
+.cache/
+compile_commands.json
+
+# OS
+.DS_Store
+Thumbs.db
