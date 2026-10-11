@@ -1,10 +1,5 @@
 #pragma once
-
-// ---------------------------------------------------------------------------
-// util.h — Pure arithmetic, no dependencies
-// ---------------------------------------------------------------------------
-
-double calc_add(double a, double b);
-double calc_sub(double a, double b);
-double calc_mul(double a, double b);
-double calc_div(double a, double b);   // returns 0.0 on divide-by-zero
+long calc_add(long a, long b);
+long calc_sub(long a, long b);
+long calc_mul(long a, long b);
+long calc_div(long a, long b, bool &div_zero);

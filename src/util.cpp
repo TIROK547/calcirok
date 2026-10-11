@@ -1,13 +1,10 @@
-// ---------------------------------------------------------------------------
-// util.cpp — Arithmetic operations. Zero dependencies.
-// ---------------------------------------------------------------------------
 #include "util.h"
-
-double calc_add(double a, double b) { return a + b; }
-double calc_sub(double a, double b) { return a - b; }
-double calc_mul(double a, double b) { return a * b; }
-
-double calc_div(double a, double b) {
-    if (b == 0.0) return 0.0;   // caller can check; no exception available
-    return a / b;
+static constexpr long SCALE = 1000000L;
+long calc_add(long a, long b) { return (a + b) * SCALE; }
+long calc_sub(long a, long b) { return (a - b) * SCALE; }
+long calc_mul(long a, long b) { return a * b * SCALE; }
+long calc_div(long a, long b, bool &div_zero) {
+    if (b == 0) { div_zero = true; return 0; }
+    div_zero = false;
+    return (a * SCALE) / b;
 }
