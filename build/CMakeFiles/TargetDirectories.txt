@@ -1,0 +1,3 @@
+/home/tirok547/Code/cpp/calcirok/build/CMakeFiles/calcirok.dir
+/home/tirok547/Code/cpp/calcirok/build/CMakeFiles/edit_cache.dir
+/home/tirok547/Code/cpp/calcirok/build/CMakeFiles/rebuild_cache.dir
